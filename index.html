@@ -194,7 +194,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <div class="class-item d-flex align-items-center">
               <a href="single.html" class="class-item-thumbnail">
                 <img src="images/img_1.jpg" alt="Image">
@@ -257,7 +257,7 @@
             
            
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <div class="class-item d-flex align-items-center">
               <a href="single.html" class="class-item-thumbnail">
                 <img src="images/img_1.jpg" alt="Image">
@@ -385,6 +385,7 @@
           <div class="tab-pane fade show active" id="nav-sunday" role="tabpanel" aria-labelledby="nav-sunday-tab">
             <div class="row">
               <div class="col-lg-6">
+
                 <div class="class-item d-flex align-items-center">
                   <a href="single.html" class="class-item-thumbnail">
                     <img src="images/img_1.jpg" alt="Image">
@@ -432,6 +433,7 @@
                     <span>30 minutes</span>
                   </div>
                 </div>
+             
             
                 <div class="class-item d-flex align-items-center">
                   <a href="single.html" class="class-item-thumbnail">
@@ -445,9 +447,13 @@
                   </div>
                 </div>
             
+             
             
               </div>
+
+              
               <div class="col-lg-6">
+              
                 <div class="class-item d-flex align-items-center">
                   <a href="single.html" class="class-item-thumbnail">
                     <img src="images/img_1.jpg" alt="Image">
@@ -509,7 +515,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
           <div class="tab-pane fade" id="nav-monday" role="tabpanel" aria-labelledby="nav-monday-tab">
             <div class="row">
               <div class="col-lg-6">
@@ -1463,6 +1469,84 @@
                   <input type="text" class="form-control" placeholder="Last name">
                 </div>
               </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <select id = "subject-select" class ="form-control" onchange="show()">
+                    <option value="">Subject</option>
+                  </select>
+                  <!--<input type="text" class="form-control" placeholder="Subject"> -->
+                </div>
+              </div>
+    
+              
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <textarea class="form-control" id="" cols="30" rows="10"
+                    placeholder="Write your message here."></textarea>
+                </div>
+              </div>
+    
+              <div class="form-group row">
+                <div class="col-md-6">
+    
+                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Send Message">
+                </div>
+              </div>
+    
+            </form>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="Register">Register
+            <form method="post" data-aos="fade">
+              <div class="form-group row">
+                <div class="col-md-6 mb-3 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="First name">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Last name">
+                </div>
+              </div>
+    
+             <!--- <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="text" class="form-control" placeholder="Subject">
+                </div>
+              </div> -->
+    
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <input type="email" class="form-control" placeholder="Email">
+                </div>
+              </div>
+              <!--<div class="form-group row">
+                <div class="col-md-12">
+                  <textarea class="form-control" id="" cols="30" rows="10"
+                    placeholder="Write your message here."></textarea>
+                </div>
+              </div> -->
+    
+              <div class="form-group row">
+                <div class="col-md-6">
+    
+                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Send Message">
+                </div>
+              </div>
+              </form>
+              </div>
+          <div role="tabpanel" class="tab-pane" id="Sign-In">Sign In
+            <form method="post" data-aos="fade">
+              <div class="form-group row">
+                <div class="col-md-6 mb-3 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="First name">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Last name">
+                </div>
+              </div>
     
               <div class="form-group row">
                 <div class="col-md-12">
@@ -1490,7 +1574,6 @@
               </div>
     
             </form>
-          </div>
         </div>
       </div>
     </div>
@@ -1571,6 +1654,102 @@
 
 
   <script src="js/main.js"></script>
+  <script>
+
+    loadDoc("./xml/class_sunday.xml", classXML);
+    loadDoc("./json/class_sunday.json", classJSOn);
+    loadSubject();
+  
+    function loadDoc(url, cFunction) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onload = function() {cFunction(this);}
+      xhttp.open("GET", url);
+      xhttp.send();
+    }
+  
+    function classXML(xmlDoc) {
+      // action goes here
+      console.log("hi");
+     var xmlData=xmlDoc.responseXML;
+    var class_list= xmlData.getElementsByTagName("class");
+    console.log(class_list);
+    var html_text="";
+      for(var i=0;i<class_list.length;i++){
+    var single_page = class_list[i].getElementsByTagName("single-page")[0].childNodes[0].nodeValue;
+    var image = class_list[i].getElementsByTagName("image")[0].childNodes[0].nodeValue;
+    var time = class_list[i].getElementsByTagName("time")[0].childNodes[0].nodeValue;
+    var name = class_list[i].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+    var instructor = class_list[i].getElementsByTagName("instructor")[0].childNodes[0].nodeValue;
+    var duration = class_list[i].getElementsByTagName("duration")[0].childNodes[0].nodeValue;
+    console.log(instructor);
+    html_text += '<div class="class-item d-flex align-items-center">'+
+                   ' <a href="'+single_page+'" class="class-item-thumbnail">'+
+                     ' <img src="'+image+'" alt="Image">'+
+                   ' </a>'+
+                    '<div class="class-item-text">'+
+                      '<span>'+time+'</span>'+
+                     ' <h2><a href="'+single_page+'">Fitness Class Name #1</a></h2>'+
+                      '<span>'+instructor+'</span>,'+
+                    '  <span>'+duration+'</span>'+
+                   ' </div>'+
+                '  </div>'
+  }
+    console.log(html_text);
+    document.getElementById('nav-sunday').children[0].children[0].innerHTML=html_text;
+  
+    }
+    function classJSOn(jsonDoc) {
+      const jsonData = jsonDoc.responseText
+      console.log(jsonData)
+      const jsonObj = JSON.parse(jsonData)
+      console.log(jsonObj)
+      var html_text
+      for(let i in jsonObj.classes){
+        html_text +='<div class="class-item d-flex align-items-center">'+
+                   ' <a href="'+jsonObj.classes[i]["single-pade"]+'" class="class-item-thumbnail">'+
+                     ' <img src="'+jsonObj.classes[i]["image"]+'" alt="Image">'+
+                   ' </a>'+
+                    '<div class="class-item-text">'+
+                      '<span>'+jsonObj.classes[i]["time"]+'</span>'+
+                     ' <h2><a href="'+jsonObj.classes[i]["single_page"]+'">Fitness Class Name #1</a></h2>'+
+                      '<span>'+jsonObj.classes[i]["instructor"]+'</span>,'+
+                    '  <span>'+jsonObj.classes[i]["duration"]+'</span>'+
+                   ' </div>'+
+                '  </div>'
+
+      }
+      document.getElementById('nav-sunday').children[0].children[1].innerHTML=html_text;
+      
+    }
+    function loadSubject(){
+      const select = document.getElementById("subject-select");
+      fetch("./json/contact_subject.json")
+        .then(jsonDoc => jsonDoc.json())
+        .then(jsonObj => {
+          jsonObj.contactSubject.forEach(job =>{
+            console.log(job)
+            const option = document.createElement("option")
+            option.textContent = job;
+            option.value=job;
+            select.appendChild(option);
+          });
+        });
+
+      
+    }
+    function show(){
+      const select = document.getElementById("subject-select");
+      console.log(select.value);
+    }
+  window.onload=function(){
+   const contact = document.getElementById("contact-head")
+  contact.innerHTML ="WoooooooooW"
+  };
+  
+  
+  
+    </script>
+  
 
 </body>
 
