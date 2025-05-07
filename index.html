@@ -1575,7 +1575,7 @@
     
             </form>
         </div>
-      </div>
+      </div> 
     </div>
 
     
@@ -1656,9 +1656,7 @@
   <script src="js/main.js"></script>
   <script>
 
-    loadDoc("./xml/class_sunday.xml", classXML);
-    loadDoc("./json/class_sunday.json", classJSOn);
-    loadSubject();
+    
   
     function loadDoc(url, cFunction) {
       const xhttp = new XMLHttpRequest();
@@ -1721,9 +1719,9 @@
       document.getElementById('nav-sunday').children[0].children[1].innerHTML=html_text;
       
     }
-    function loadSubject(){
+    function loadSubject(file){
       const select = document.getElementById("subject-select");
-      fetch("./json/contact_subject.json")
+      fetch(file)
         .then(jsonDoc => jsonDoc.json())
         .then(jsonObj => {
           jsonObj.contactSubject.forEach(job =>{
@@ -1746,7 +1744,10 @@
   contact.innerHTML ="WoooooooooW"
   };
   
-  
+  loadDoc("./xml/class_sunday.xml", classXML);
+  loadDoc("./json/class_sunday.json", classJSOn);
+  //loadSubject('./json/contact_subject.json');
+  loadSubject('http://localhost:4040/subject');
   
     </script>
   
