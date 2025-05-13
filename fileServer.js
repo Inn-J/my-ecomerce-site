@@ -4,8 +4,6 @@ const fs = require('fs');
 const path = require('path');
 
 const server = http.createServer(function (req, res) {
-    //var q = url.parsez(req.url,true)
-
   let filePath = '.'+req.url;
   if(filePath === "./") filePath = "./index.html";
   
