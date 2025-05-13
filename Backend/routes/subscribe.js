@@ -16,7 +16,7 @@ router.post('/',(req,res) => {
     let subscribes = [];
     if(fs.existsSync(filePath) == true){
         const filedata = fs.readFileSync(filePath,'utf-8');
-        subscribes = JSON.parse(filedata)
+        subscribes = JSON.parse(filedata);
         subscribes.push(subscribe);
         fs.writeFileSync(filePath,JSON.stringify(subscribes,null,2));
         res.status(200).json({status : "Message Recieved"});
