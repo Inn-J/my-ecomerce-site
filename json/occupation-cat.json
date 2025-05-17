@@ -1,8 +1,5 @@
 {
-  "occupation-cat": [
-    "Computer",
-    "Healthcare",
-    "Scientific"
-    
-  ]
+  "Computer": "computer.json",
+  "Healthcare": "healthcare.json",
+  "Scientific": "scientific.json"
 }

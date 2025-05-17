@@ -11,7 +11,7 @@ save array into file
 router.post('/',(req,res) => {
     const {email} = req.body;
     const subscribe = {subscribe  : new Date(),email};
-    const filePath = path.join(__dirname,'..','data','subscribe.json');
+    const filePath = path.join(__dirname,'..','Data','subscribe.json');
     console.log('Content form submited',{email});
     let subscribes = [];
     if(fs.existsSync(filePath) == true){

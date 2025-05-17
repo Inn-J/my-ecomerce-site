@@ -1,6 +1,5 @@
-{
-  "healthcare": [
-"Health professional ",
+[
+"Health professional",
 "Physician Associate ",
 "Pharmacist",
 "Registered nurse",
@@ -33,4 +32,3 @@
 "Physiotherapist",
 "Astronomer"   
   ]
-}

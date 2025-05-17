@@ -1,0 +1,25 @@
+[
+  {
+    "receivedAt": "2025-05-17T13:17:42.297Z",
+    "fname": "gg",
+    "lname": "gggggggggg",
+    "email": "ggez@gmail.com",
+    "subject": "Price",
+    "message": "Hi : )"
+  },
+  {
+    "fname": "gg",
+    "lname": "gggggggggg",
+    "email": "ggez@gmail.com",
+    "subject": "Auther",
+    "message": "gggggggggggggggggggggggggggg"
+  },
+  {
+    "receivedAt": "2025-05-17T13:21:04.829Z",
+    "fname": "gg",
+    "lname": "gggggggggg",
+    "email": "ggez@gmail.com",
+    "subject": "Location",
+    "message": "LoL"
+  }
+]

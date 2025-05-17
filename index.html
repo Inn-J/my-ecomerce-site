@@ -1510,42 +1510,42 @@
       <div class="tab-pane fade" id="register" role="tabpanel">
         <div class="row justify-content-center">
           <div class="col-md-7">
-            <form method="post" data-aos="fade">
+            <form id="reg-form" method="post" data-aos="fade">
               <div class="form-group row">
                 <div class="col-md-6 mb-3 mb-lg-0">
-                  <input type="text" class="form-control" placeholder="First name">
+                  <input id="reg-fname" type="text" class="form-control" placeholder="First name">
                 </div>
                 <div class="col-md-6">
-                  <input type="text" class="form-control" placeholder="Last name">
+                  <input id="reg-lname" type="text" class="form-control" placeholder="Last name">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
-                  <select id="ocupationcat-select" name="ocupationCatSelect" class="form-control">
+                  <select id="occupationcat-select" name="ocupationCatSelect" class="form-control">
                     <option value="">Ocupation Category</option>
                   </select>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
-                  <select id="ocupation-select" name="ocupationSelect" class="form-control">
+                  <select id="occupation-select" name="ocupationSelect" class="form-control">
                     <option value="">Ocupation</option>
                   </select>
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
-                  <input type="email" class="form-control" placeholder="Email">
+                  <input id="reg-email" type="email" class="form-control" placeholder="Email">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
-                  <input type="password" class="form-control" placeholder="Password">
+                  <input id="reg-password" type="password" class="form-control" placeholder="Password">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
-                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Register">
+                  <input type="button" class="btn btn-primary py-3 px-5 btn-block" value="Register"onclick= "userRegister()" >
                 </div>
               </div>
             </form>
@@ -1555,20 +1555,20 @@
       <div class="tab-pane fade" id="sign-in" role="tabpanel">
         <div class="row justify-content-center">
           <div class="col-md-7">
-            <form method="post" data-aos="fade">
+            <form id="log-form" method="post" data-aos="fade">
               <div class="form-group row">
                 <div class="col-md-12">
-                  <input type="email" class="form-control" placeholder="Email">
+                  <input id="sign-email" type="email" class="form-control" placeholder="Email">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-12">
-                  <input type="password" class="form-control" placeholder="Password">
+                  <input id="sign-password" type="password" class="form-control" placeholder="Password">
                 </div>
               </div>
               <div class="form-group row">
                 <div class="col-md-6">
-                  <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Sign In">
+                  <input type="button" class="btn btn-primary py-3 px-5 btn-block" value="Sign In" onclick="userLogin()">
                 </div>
               </div>
             </form>
@@ -1606,7 +1606,7 @@
             <form id="subscribe-form">
               <div class="d-flex mb-5">
                 <input id="subscribe-email" type="email" class="form-control rounded-0" placeholder="Email">
-                <input type="submit" class="btn btn-primary rounded-0" value="Subscribe">
+                <input type="submit" class="btn btn-primary rounded-0" value="Subscribe" >
               </div>
             </form>
           </div>
@@ -1734,26 +1734,67 @@
             option.value=job;
             select.appendChild(option);
           });
-        });
+        });    
+    }
+ async function loadOccupationCategories() {
+  const select = document.getElementById('occupationcat-select');
 
-      
+  try {
+    const res = await fetch('http://localhost:5000/api/occupation');
+    if (!res.ok) throw new Error('error loading occupation');
+    const data = await res.json();
+
+    select.innerHTML = '<option value="">Occupation Category</option>';
+
+    for (const category in data) {
+      const option = document.createElement("option");
+      option.value = category;        
+      option.textContent = category;
+      select.appendChild(option);
     }
-    function show(){
-      const select = document.getElementById("subject-select");
-      console.log(select.value);
-    }
+  } catch (err) {
+    console.error('error', err);
+  }
+}
+
   window.onload=function(){
    const contact = document.getElementById("contact-head")
   contact.innerHTML ="WoooooooooW"
-  
-
   //loadDoc("./xml/class_sunday.xml", classXML);
   loadDoc("./json/class_sunday.json", classJSON);
   //loadSubject('http://localhost:4040');
   //loadSubject('./json/contact_subject.json');
-  loadSubject('http://localhost:4000/api/subject');
+  loadSubject('http://localhost:5000/api/subject');
+  loadOccupationCategories();
+  setupOccupationCategoryListener();
   document.getElementById('subscribe-form').addEventListener('submit',e => subscribeSubmit(e));
-  };
+};
+  function setupOccupationCategoryListener() {
+  const categorySelect = document.getElementById("occupationcat-select");
+  const occupationSelect = document.getElementById("occupation-select");
+
+  categorySelect.addEventListener("change", async function () {
+    const category = this.value;
+    occupationSelect.innerHTML = '<option value="">Occupation</option>';
+
+    if (category) {
+      const catResponse = await fetch('http://localhost:5000/api/occupation');
+      const catData = await catResponse.json();
+      const filePath = './json/' + catData[category];
+
+      const occResponse = await fetch(filePath);
+      const occupations = await occResponse.json();
+
+      occupations.forEach(occupation => {
+        const option = document.createElement("option");
+        option.value = occupation;
+        option.textContent = occupation;
+        occupationSelect.appendChild(option);
+      });
+    }
+  });
+}
+
 
   //Ajax func
   const ajax = async (config) => {
@@ -1771,38 +1812,132 @@
     return response;
   }
   function submitContact(){
-    const fname = document.getElementById('fname').value.trim();
-    const lname = document.getElementById('lname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const subject = document.getElementById('subject-select').value.trim();
-    const message = document.getElementById('message').value.trim();
-    if (!fname || !lname || !email || !subject || !message) {
-      alert('Please fill out all fields in the form.');
-      return;
-    }
-    const data = {
-      fname : document.getElementById('fname').value,
-      lname : document.getElementById('lname').value,
-      email : document.getElementById('email').value,
-      subject : document.getElementById('subject-select').value,
-      message : document.getElementById('message').value
-    };
-    console.log(data);
-    let response = ajax({
-      url : 'http://localhost:4000/api/contact',
-      method : 'POST',
-      data : data
-    });
-    console.log(response);
-    document.getElementById('contact-form').reset();
+  const fname = document.getElementById('fname').value.replace(/\s+/g, '');
+  const lname = document.getElementById('lname').value.replace(/\s+/g, '');
+  const email = document.getElementById('email').value.replace(/\s+/g, '');
+  const subject = document.getElementById('subject-select').value.trim();
+  const message = document.getElementById('message').value.trim();
+
+  if (!fname || !lname || !email || !subject || !message) {
+    alert('Please fill out all fields in the form.');
+    return;
   }
+
+  const data = {
+    fname: fname,
+    lname: lname,
+    email: email,
+    subject: subject,
+    message: message
+  };
+
+  console.log(data);
+
+  let response = ajax({
+    url : 'http://localhost:5000/api/contact',
+    method : 'POST',
+    data : data
+  });
+
+  console.log(response);
+  document.getElementById('contact-form').reset();
+}
+
   
+  function userRegister() {
+  const fname = document.getElementById('reg-fname').value.replace(/\s+/g, '');
+  const lname = document.getElementById('reg-lname').value.replace(/\s+/g, '');
+  const occupation_cat = document.getElementById('occupationcat-select').value.trim();
+  const occupation = document.getElementById('occupation-select').value.trim();
+  const email = document.getElementById('reg-email').value.replace(/\s+/g, '');
+  const setpassword = document.getElementById('reg-password').value.replace(/\s+/g, '');
+
+  if (!fname || !lname || !occupation_cat || !occupation || !email || !setpassword) {
+    alert('Please fill out all fields in the form.');
+    return;
+  }
+
+  const data = {
+    fname,
+    lname,
+    occupation_cat,
+    occupation,
+    email,
+    setpassword
+  };
+
+  fetch('http://localhost:5000/api/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => {
+    if (res.status === 409) {
+      throw new Error("duplicate");
+    } else if (!res.ok) {
+      throw new Error("general");
+    }
+    return res.json();
+  })
+  .then(result => {
+    console.log('Registered successfully:', result);
+    alert('Registration successful!');
+    document.getElementById('reg-form').reset();
+  })
+  .catch(err => {
+    if (err.message === "duplicate") {
+      alert("This email is already registered. Please use a different one.");
+    } else {
+      alert('Error during registration.');
+    }
+    console.error('Error:', err);
+  });
+}
+
+function userLogin() {
+  const email = document.getElementById('sign-email').value.trim();
+  const password = document.getElementById('sign-password').value.trim();
+
+  if (!email || !password) {
+    alert('Please enter both email and password.');
+    return;
+  }
+
+  fetch('http://localhost:5000/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email, password })
+  })
+    .then(res => {
+      if (!res.ok) throw res;
+      return res.json();
+    })
+    .then(result => {
+      alert('Login successful. Welcome ' + result.user.fname);
+      console.log(result);
+      document.getElementById('log-form').reset();
+    })
+    .catch(async err => {
+      const errorData = await err.json();
+      alert(errorData.error || 'Login error');
+      console.error('Login failed:', errorData);
+    });
+}
+
   async function subscribeSubmit(e){
     e.preventDefault();
-    console.log('hi');
-    const email = {email : document.getElementById("subscribe-email").value};
+    const email = {email : document.getElementById('subscribe-email').value};
+    const subemail= document.getElementById('subscribe-email').value.trim();
+    if (!subemail) {
+      alert('Please fill the email.');
+      return;
+    }
     console.log(email);
-    const response = await fetch('http://localhost:4000/api/subscribe', {
+    const response = await fetch('http://localhost:5000/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(email)
