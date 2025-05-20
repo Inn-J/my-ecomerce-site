@@ -2,12 +2,6 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path')
-/* 
-readfile
-pharse in to array
-add new data to array
-save array into file
-*/
 router.post('/',(req,res) => {
     const {email} = req.body;
     const subscribe = {subscribe  : new Date(),email};
